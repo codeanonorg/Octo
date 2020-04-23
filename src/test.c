@@ -24,10 +24,18 @@ static PyObject *octo_hello(PyObject *self, PyObject *args) {
   Py_RETURN_NONE;
 }
 
+/**
+ * @brief Methods of the Octo API
+ *
+ */
 static PyMethodDef octo_methods[] = {
     {"hello", octo_hello, METH_VARARGS, "Simply say hello."},
     {NULL, NULL, 0, NULL}};
 
+/**
+ * @brief Octo module
+ *
+ */
 static PyModuleDef octo_module = {PyModuleDef_HEAD_INIT,
                                   "octo",
                                   NULL,
@@ -38,11 +46,12 @@ static PyModuleDef octo_module = {PyModuleDef_HEAD_INIT,
                                   NULL,
                                   NULL};
 
-static PyObject *PyInit_octo() { return PyModule_Create(&octo_module); }
-
 /**
- * @brief Executing functions from a python module
+ * @brief Function to instantiate a new Octo module
+ *
+ * @return PyObject*  The PyObject representing the Octo module
  */
+static PyObject *PyInit_octo() { return PyModule_Create(&octo_module); }
 
 int main(int argc, char const *argv[]) {
 
@@ -53,8 +62,13 @@ int main(int argc, char const *argv[]) {
     return 1;
   }
 
+  // Exposing the Octo API
   PyImport_AppendInittab("octo", &PyInit_octo);
+  // Initializing the python interp
   Py_Initialize();
+  // Updating the python path
+  PyRun_SimpleString("import sys");
+  PyRun_SimpleString("sys.path.append(\".\")");
 
   for (int i = 1; i < argc; i++) {
     pName = PyUnicode_DecodeFSDefault(argv[i]);

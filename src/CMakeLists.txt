@@ -17,4 +17,4 @@ add_executable(test test.c)
 
 target_include_directories(octo PUBLIC ./)
 target_include_directories(test PUBLIC ${Python_INCLUDE_DIRS})
-target_link_libraries(test ${Python_LIBRARIES})
+target_link_libraries(test Python::Python)
