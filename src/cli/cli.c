@@ -35,7 +35,7 @@ void default_opt(octo_cli_opt *opt) {
   }
 }
 
-int cli(int argc, char *const argv[], octo_cli_opt *opt) {
+void cli(int argc, char *const argv[], octo_cli_opt *opt) {
   int c;
 
   static struct option long_options[] = {
@@ -83,6 +83,4 @@ int cli(int argc, char *const argv[], octo_cli_opt *opt) {
   }
 
   check_io(opt);
-
-  return 0;
 }
