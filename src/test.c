@@ -55,8 +55,6 @@ static PyObject *PyInit_octo() { return PyModule_Create(&octo_module); }
 
 int main(int argc, char const *argv[]) {
 
-  argv[0]++;
-
   PyObject *pName, *pModule, *pInit, *pRet;
 
   if (argc < 1) {

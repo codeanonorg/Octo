@@ -3,13 +3,44 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void print_usage() {
+  fprintf(
+      stderr,
+      "Usage : octo (-i input_file | --input input_file) input_file (-O | -o "
+      "output_file) [ -h | --help ] [ -p | --verbose ]\n");
+}
+
+void check_io(octo_cli_opt *opt) {
+  if (opt->input == NULL) {
+    fprintf(stderr, "[octo-cli] missing input file\n");
+    print_usage();
+    exit(1);
+  }
+  if (opt->flags[F_OUT]) {
+    opt->output = "octo_out";
+  } else {
+    if (opt->output == NULL) {
+      fprintf(stderr, "[octo-cli] missing output file\n");
+      print_usage();
+      exit(1);
+    }
+  }
+}
+
+void default_opt(octo_cli_opt *opt) {
+  opt->input = NULL;
+  opt->output = NULL;
+  for (int i = 0; i < N_FLAGS; i++) {
+    opt->flags[i] = false;
+  }
+}
+
 int cli(int argc, char *const argv[], octo_cli_opt *opt) {
   int c;
-  static int verbose_flag = 0;
-  static int help_flag = 0;
 
   static struct option long_options[] = {
-      {"verbose", no_argument, NULL, 'p'},
+      {"version", no_argument, NULL, 'V'},
+      {"verbose", no_argument, NULL, 'v'},
       {"help", no_argument, NULL, 'h'},
       {"input", required_argument, NULL, 'i'},
       {"output", required_argument, NULL, 'o'},
@@ -17,32 +48,41 @@ int cli(int argc, char *const argv[], octo_cli_opt *opt) {
 
   int option_index = 0;
 
-  while ((c = getopt_long(argc, argv, "i:o:Ovh", long_options,
+  while ((c = getopt_long(argc, argv, "i:o:OvhV", long_options,
                           &option_index)) != -1) {
     switch (c) {
     case 'i':
-      printf("[i] is set to %s\n", optarg);
+      opt->input = optarg;
       break;
     case 'o':
-      printf("[o] is set to %s\n", optarg);
+      opt->output = optarg;
       break;
     case 'O':
-      printf("[O] is set (overwriting -o)\n");
+      opt->output = optarg;
       break;
     case 'h':
-      printf("[h] is set\n");
+      opt->flags[F_HELP] = true;
       break;
-    case '?':
-      printf(
-          "Usage : %s (-i input_file | --input input_file) input_file (-O | -o "
-          "output_file) [ -h | --help ] [ -p | --verbose ]\n",
-          argv[0]);
+    case 'v':
+      opt->flags[F_VERSION] = true;
+      break;
+    case 'V':
+      opt->flags[F_VERBOSE] = true;
       break;
     default:
-      fprintf(stderr, "An unexpected CLI error occurs\n");
+      print_usage();
       exit(1);
     }
   }
+
+  if (optind < argc) {
+    while (optind < argc)
+      printf("[octo-cli] unexpected argument : %s\n", argv[optind++]);
+    print_usage();
+    exit(1);
+  }
+
+  check_io(opt);
 
   return 0;
 }
