@@ -58,7 +58,7 @@ void cli(int argc, char *const argv[], octo_cli_opt *opt) {
       opt->output = optarg;
       break;
     case 'O':
-      opt->output = optarg;
+      opt->output = "out.bin";
       break;
     case 'h':
       opt->flags[F_HELP] = true;
