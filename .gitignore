@@ -1,3 +1,9 @@
 # CMake artifacts
 build/
 .vscode/
+*/*.log
+*/*.fls
+*/*.fdb_latexmk
+*/*.aux
+*/*.gz
+*/*.out
