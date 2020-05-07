@@ -7,6 +7,7 @@ find_package(Python 3.8 COMPONENTS Interpreter Development REQUIRED)
 # LIBRARIES
 add_library(cli OBJECT ./cli/cli.c)
 add_library(io OBJECT ./io/io.c)
+add_library(arch OBJECT ./arch/arch.c)
 
 
 # EXECUTABLE
