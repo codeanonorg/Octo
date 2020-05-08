@@ -15,6 +15,6 @@ int main(int argc, char *const argv[]) {
   printf("-> flag HELP    : %s \n", opt.flags[F_HELP] ? "set" : "unset");
   printf("-> INPUT        : %s \n", opt.input);
   printf("-> OUTPUT       : %s \n", opt.output);
-  disas_x86((unsigned char *)"\x55\x48\x8b\x05\xb8\x13\x00\x00", 9);
+  disas(x86, (unsigned char *)"\x55\x48\x8b\x05\xb8\x13\x00\x00", 9);
   return 0;
 }
