@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 int main(int argc, char *const argv[]) {
-  octo_cli_opt opt;
+  octo_cli_t opt;
   cli(argc, argv, &opt);
 
   // Just for tests...
