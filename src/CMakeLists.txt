@@ -9,6 +9,7 @@ project(Octo)
 # Python Lib
 find_package(Python 3.8 COMPONENTS Interpreter Development REQUIRED)
 
+<<<<<<< HEAD
 # Capstone Lib
 pkg_check_modules(Capstone REQUIRED Capstone)
 # =================================================================
@@ -16,6 +17,12 @@ pkg_check_modules(Capstone REQUIRED Capstone)
 
 # =================================================================
 # Internal libraries
+=======
+# LIBRARIES
+add_library(cli OBJECT ./cli/cli.c)
+add_library(io OBJECT ./io/io.c)
+add_library(arch OBJECT ./arch/arch.c)
+>>>>>>> master
 
 # sources
 file(GLOB SRC_IO ./io/*.c)
