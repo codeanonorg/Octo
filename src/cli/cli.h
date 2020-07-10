@@ -17,7 +17,7 @@ typedef struct {
   char *input;
   char *output;
   bool flags[4];
-} octo_cli_opt;
+} octo_cli_t;
 
 /**
  * @brief Run the CLI
@@ -26,18 +26,18 @@ typedef struct {
  * @param argv  Array of arguments
  * @param opt   Input information structure
  */
-void cli(int argc, char *const argv[], octo_cli_opt *opt);
+void cli(int argc, char *const argv[], octo_cli_t *opt);
 
 /**
  * @brief Destruct an opt structure
  *
  */
-void delete_opt(octo_cli_opt **);
+void delete_opt(octo_cli_t **);
 
 /**
  * @brief Initialize an opt structure with default values
  *
  */
-void default_opt(octo_cli_opt *);
+void default_opt(octo_cli_t *);
 
 #endif

@@ -103,7 +103,7 @@ int main(int argc, char const *argv[]) {
     }
   }
 
-  // Shut down the python interp
+  // Shut down the python interpreter
   printf("[%d/%d] modules loaded\n", modules_loaded, argc - 1);
   printf("[%d/%d] working modules\n", working_modules_loaded, modules_loaded);
   if (Py_FinalizeEx() < 0) {

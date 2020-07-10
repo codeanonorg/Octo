@@ -1,33 +1,43 @@
 #include <cli/cli.h>
 #include <getopt.h>
+#include <io/logger.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-void print_usage() {
-  fprintf(
-      stderr,
-      "Usage : octo (-i input_file | --input input_file) input_file (-O | -o "
-      "output_file) [ -h | --help ] [ -p | --verbose ]\n");
-}
+const char *usage =
+    "Usage : octo (-i input_file | --input input_file) input_file (-O | -o "
+    "output_file) [ -h | --help ] [ -p | --verbose ]";
 
-void check_io(octo_cli_opt *opt) {
+void check_io(octo_cli_t *opt) {
   if (opt->input == NULL) {
-    fprintf(stderr, "[octo-cli] missing input file\n");
-    print_usage();
+    octo_ERR(CLI, "missing input file");
+    octo_ERR(CLI, usage);
     exit(1);
   }
   if (opt->flags[F_OUT]) {
-    opt->output = "octo_out";
+    opt->output = "out.bin";
   } else {
     if (opt->output == NULL) {
-      fprintf(stderr, "[octo-cli] missing output file\n");
-      print_usage();
+      octo_ERR(CLI, "missing output file");
+      octo_ERR(CLI, usage);
       exit(1);
     }
   }
 }
 
-void default_opt(octo_cli_opt *opt) {
+void display_help() {
+  const char *help =
+      "-i --input\n\tThe input file\n"
+      "-o --output\n\tThe output file\n"
+      "-O\n\tGenerate the output file according to the input name\n"
+      "-v --verbose\n\tSet verbose mode\n"
+      "-V --version\n\tDisplay the version\n"
+      "-h --help\n\tDisplay this menu";
+  fprintf(stderr, "%s\n", help);
+  exit(EXIT_FAILURE);
+}
+
+void default_opt(octo_cli_t *opt) {
   opt->input = NULL;
   opt->output = NULL;
   for (int i = 0; i < N_FLAGS; i++) {
@@ -35,8 +45,9 @@ void default_opt(octo_cli_opt *opt) {
   }
 }
 
-void cli(int argc, char *const argv[], octo_cli_opt *opt) {
-  int c;
+void cli(int argc, char *const argv[], octo_cli_t *opt) {
+  int c, option_index;
+  char *msg = NULL;
 
   static struct option long_options[] = {
       {"version", no_argument, NULL, 'V'},
@@ -45,8 +56,6 @@ void cli(int argc, char *const argv[], octo_cli_opt *opt) {
       {"input", required_argument, NULL, 'i'},
       {"output", required_argument, NULL, 'o'},
       {0, 0, 0, 0}};
-
-  int option_index = 0;
 
   while ((c = getopt_long(argc, argv, "i:o:OvhV", long_options,
                           &option_index)) != -1) {
@@ -58,10 +67,11 @@ void cli(int argc, char *const argv[], octo_cli_opt *opt) {
       opt->output = optarg;
       break;
     case 'O':
-      opt->output = optarg;
+      opt->flags[F_OUT] = true;
       break;
     case 'h':
       opt->flags[F_HELP] = true;
+      display_help();
       break;
     case 'v':
       opt->flags[F_VERSION] = true;
@@ -70,16 +80,16 @@ void cli(int argc, char *const argv[], octo_cli_opt *opt) {
       opt->flags[F_VERBOSE] = true;
       break;
     default:
-      print_usage();
+      octo_ERR(CLI, usage);
       exit(1);
     }
   }
 
   if (optind < argc) {
-    while (optind < argc)
-      printf("[octo-cli] unexpected argument : %s\n", argv[optind++]);
-    print_usage();
-    exit(1);
+    while (optind < argc) {
+      sprintf(msg, "unexpected argument %s", argv[optind++]);
+      octo_warn(CLI, opt, msg);
+    }
   }
 
   check_io(opt);
