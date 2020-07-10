@@ -25,6 +25,18 @@ void check_io(octo_cli_t *opt) {
   }
 }
 
+void display_help() {
+  const char *help =
+      "-i --input\n\tThe input file\n"
+      "-o --output\n\tThe output file\n"
+      "-O\n\tGenerate the output file according to the input name\n"
+      "-v --verbose\n\tSet verbose mode\n"
+      "-V --version\n\tDisplay the version\n"
+      "-h --help\n\tDisplay this menu";
+  fprintf(stderr, "%s\n", help);
+  exit(EXIT_FAILURE);
+}
+
 void default_opt(octo_cli_t *opt) {
   opt->input = NULL;
   opt->output = NULL;
@@ -59,6 +71,7 @@ void cli(int argc, char *const argv[], octo_cli_t *opt) {
       break;
     case 'h':
       opt->flags[F_HELP] = true;
+      display_help();
       break;
     case 'v':
       opt->flags[F_VERSION] = true;
