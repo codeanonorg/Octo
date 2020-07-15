@@ -20,12 +20,12 @@ pkg_check_modules(Capstone REQUIRED Capstone)
 # sources
 file(GLOB SRC_IO ./io/*.c)
 file(GLOB SRC_CLI ./cli/*.c)
-file(GLOB SRC_ARCH ./arch/*.c)
+file(GLOB SRC_CORE ./core/*.c)
 
 # objects
 add_library(cli OBJECT ${SRC_CLI})
 add_library(io OBJECT ${SRC_IO})
-add_library(arch OBJECT ${SRC_ARCH})
+add_library(core OBJECT ${SRC_CORE})
 target_link_libraries(io PUBLIC ${Capstone_LINK_LIBRARIES})
 # =================================================================
 
@@ -35,17 +35,15 @@ target_link_libraries(io PUBLIC ${Capstone_LINK_LIBRARIES})
 
 # sources
 add_executable(octo octo.c)
-add_executable(test test.c)
 
 # includes
 target_include_directories(cli PUBLIC ./)
-target_include_directories(io PUBLIC ./ ${Capstone_INCLUDE_DIRS})
+target_include_directories(core PUBLIC ./ ${Capstone_INCLUDE_DIRS} ${Python_INCLUDE_DIRS})
+target_include_directories(io PUBLIC ./)
 target_include_directories(octo PUBLIC ./)
-target_include_directories(test PUBLIC ${Python_INCLUDE_DIRS})
 
 # link
-target_link_libraries(test Python::Python)
-target_link_libraries(octo cli io)
+target_link_libraries(octo cli io core Python::Python)
 # =================================================================
 
 
@@ -53,5 +51,6 @@ target_link_libraries(octo cli io)
 # Compile options
 target_compile_options(cli PRIVATE -Werror -Wall -Wextra)
 target_compile_options(io PRIVATE -Werror -Wall -Wextra)
+target_compile_options(core PRIVATE -Werror -Wall -Wextra)
 target_compile_options(octo PRIVATE -Werror -Wall -Wextra)
 # =================================================================

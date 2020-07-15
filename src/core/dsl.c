@@ -1,3 +1,8 @@
+/**
+ * @brief (WIP) Python based DSL for Octo
+ *
+ */
+
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
@@ -18,6 +23,7 @@ static int working_modules_loaded = 0;
  *
  */
 static PyObject *octo_hello(PyObject *self, PyObject *args) {
+  (void)self;
   if (!PyArg_ParseTuple(args, ":hello"))
     return NULL;
   printf("a module says hello to octo !\n");
@@ -53,7 +59,7 @@ static PyModuleDef octo_module = {PyModuleDef_HEAD_INIT,
  */
 static PyObject *PyInit_octo() { return PyModule_Create(&octo_module); }
 
-int main(int argc, char const *argv[]) {
+int run(int argc, char const *argv[]) {
 
   PyObject *pName, *pModule, *pInit, *pRet;
 

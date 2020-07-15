@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <capstone/capstone.h>
+#include <core/disas.h>
 #include <inttypes.h>
-#include <io/disas.h>
 #include <io/logger.h>
 #include <stdio.h>
 
