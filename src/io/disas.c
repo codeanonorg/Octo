@@ -2,6 +2,7 @@
 #include <capstone/capstone.h>
 #include <inttypes.h>
 #include <io/disas.h>
+#include <io/logger.h>
 #include <stdio.h>
 
 enum cs_arch arch_to_cs_arch(enum arch_e arch) {
@@ -59,7 +60,7 @@ int disas(enum arch_e arch, const unsigned char *buff, unsigned int size) {
   if (count > 0) {
     size_t j;
     for (j = 0; j < count; j++) {
-      fprintf(stderr, "0x%" PRIx64 ":\t%s\t\t%s\n", insn[j].address,
+      fprintf(stdout, "0x%" PRIx64 ":\t%s\t\t%s\n", insn[j].address,
               insn[j].mnemonic, insn[j].op_str);
     }
     cs_free(insn, count);

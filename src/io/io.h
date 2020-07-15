@@ -1,7 +1,7 @@
 #ifndef IO_H
 #define IO_H
 
-#include "disas.h"
-#include "loger.h"
+#include <io/disas.h>
+#include <io/logger.h>
 
 #endif

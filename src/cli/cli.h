@@ -16,7 +16,7 @@
 typedef struct {
   char *input;
   char *output;
-  bool flags[4];
+  bool flags[N_FLAGS];
 } octo_cli_t;
 
 /**
