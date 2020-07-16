@@ -10,6 +10,8 @@ char *log_src_to_string(octo_log_t log_src) {
     return "octo-io";
   case CLI:
     return "octo-cli";
+  default:
+    return "";
   }
 }
 

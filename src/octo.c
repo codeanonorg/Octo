@@ -1,5 +1,5 @@
 #include <cli/cli.h>
-#include <io/disas.h>
+#include <core/disas.h>
 #include <stdio.h>
 
 int main(int argc, char *const argv[]) {
